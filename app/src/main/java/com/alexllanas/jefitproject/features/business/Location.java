@@ -1,9 +1,13 @@
 package com.alexllanas.jefitproject.features.business;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Location {
+    @SerializedName("address1")
     public String address = "";
     public String city = "";
     public String state = "";
+    @SerializedName("zip_code")
     public String zipCode = "";
 
     public Location(String address, String city, String state, String zipCode) {

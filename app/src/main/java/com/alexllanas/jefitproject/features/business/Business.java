@@ -1,18 +1,27 @@
 package com.alexllanas.jefitproject.features.business;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.alexllanas.jefitproject.features.detail.Review;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.Map;
 
+@Entity
 public class Business {
+
+    @PrimaryKey
     public String id;
+
     public String name = "";
     public int rating;
     public ArrayList<Map<String, String>> categories;
     public Location location;
     public ArrayList<Review> reviews;
     public boolean isLiked;
+    @SerializedName("image_url")
     public String imageUrl = "";
 
     public Business(String id, String name, int rating, ArrayList<Map<String, String>> categories, Location location, ArrayList<Review> reviews, boolean isLiked, String imageUrl) {

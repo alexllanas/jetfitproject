@@ -10,7 +10,7 @@ public class StaticData {
             Arrays.asList(
                     new City("San Francisco"),
                     new City("Los Angeles"),
-                    new City("Montreal"),
+                    new City("Atlanta"),
                     new City("Chicago"),
                     new City("Milwaukee")
             )
