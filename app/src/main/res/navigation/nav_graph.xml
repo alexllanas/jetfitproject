@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_businessFragment_to_businessDetailFragment"
             app:destination="@id/businessDetailFragment" />
+        <argument
+            android:name="cityName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/businessDetailFragment"

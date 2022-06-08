@@ -10,23 +10,23 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.alexllanas.jefitproject.R;
+import com.alexllanas.jefitproject.databinding.FragmentBusinessBinding;
 import com.alexllanas.jefitproject.ui.MainActivity;
-
-import java.util.Objects;
 
 public class BusinessFragment extends Fragment {
 
+    private FragmentBusinessBinding binding;
     private MainActivity mainActivity;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        binding = FragmentBusinessBinding.inflate(inflater, container, false);
         mainActivity = ((MainActivity) requireActivity());
 
         configureToolbar();
 
-        return inflater.inflate(R.layout.fragment_business, container, false);
+        return binding.getRoot();
     }
 
     private void configureToolbar() {
@@ -34,4 +34,6 @@ public class BusinessFragment extends Fragment {
         mainActivity.setToolbarTitle(R.string.business_list_title);
         mainActivity.setBackNavigationIcon(true);
     }
+
+
 }

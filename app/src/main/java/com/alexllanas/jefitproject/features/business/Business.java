@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Business {
-    public int id;
+    public String id;
     public String name = "";
     public int rating;
     public ArrayList<Map<String, String>> categories;
@@ -15,7 +15,7 @@ public class Business {
     public boolean isLiked;
     public String imageUrl = "";
 
-    public Business(int id, String name, int rating, ArrayList<Map<String, String>> categories, Location location, ArrayList<Review> reviews, boolean isLiked, String imageUrl) {
+    public Business(String id, String name, int rating, ArrayList<Map<String, String>> categories, Location location, ArrayList<Review> reviews, boolean isLiked, String imageUrl) {
         this.id = id;
         this.name = name;
         this.rating = rating;
@@ -26,11 +26,11 @@ public class Business {
         this.imageUrl = imageUrl;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
