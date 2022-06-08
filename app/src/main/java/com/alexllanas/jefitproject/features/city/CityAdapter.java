@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alexllanas.jefitproject.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder> {
 
@@ -33,6 +32,10 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
     @Override
     public int getItemCount() {
         return cities.size();
+    }
+
+    public void submitList(ArrayList<City> items) {
+        cities = items;
     }
 
     public class CityViewHolder extends RecyclerView.ViewHolder {

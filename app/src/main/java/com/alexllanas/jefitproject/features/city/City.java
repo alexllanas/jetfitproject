@@ -5,8 +5,17 @@ import com.alexllanas.jefitproject.features.business.Business;
 import java.util.ArrayList;
 
 public class City {
-    public String name;
-    public ArrayList<Business> businessList;
+    public String name = "";
+    public ArrayList<Business> businessList = new ArrayList<>();
+
+    public City(String name) {
+        this.name = name;
+    }
+
+    public City(String name, ArrayList<Business> businessList) {
+        this.name = name;
+        this.businessList = businessList;
+    }
 
     public String getName() {
         return name;
