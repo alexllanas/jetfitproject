@@ -8,6 +8,5 @@
         android:id="@+id/recycler_view_city"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/list_item_city" />
-
+        tools:listitem="@layout/list_item_review" />
 </androidx.constraintlayout.widget.ConstraintLayout>

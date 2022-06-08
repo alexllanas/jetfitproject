@@ -5,9 +5,9 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_city"
+        android:id="@+id/recycler_view_business"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/list_item_city" />
+        tools:listitem="@layout/list_item_business" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
