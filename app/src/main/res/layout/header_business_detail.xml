@@ -31,7 +31,6 @@
         android:layout_alignBottom="@id/image_business_header"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_favorite_outlined"
-        app:tint="@color/white" />
+        android:src="@drawable/ic_favorite_outlined_white"  />
 
 </RelativeLayout>

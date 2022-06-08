@@ -1,4 +1,5 @@
 package com.alexllanas.jefitproject.features.city;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
