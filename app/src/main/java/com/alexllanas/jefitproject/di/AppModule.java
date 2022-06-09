@@ -8,7 +8,7 @@ import com.alexllanas.jefitproject.data.db.CityDao;
 import com.alexllanas.jefitproject.data.db.JefitDatabase;
 import com.alexllanas.jefitproject.data.network.LiveDataCallAdapterFactory;
 import com.alexllanas.jefitproject.data.network.YelpApiService;
-import com.alexllanas.jefitproject.features.city.CityRepo;
+import com.alexllanas.jefitproject.ui.MainRepo;
 import com.alexllanas.jefitproject.util.Constants;
 
 import javax.inject.Singleton;
@@ -58,7 +58,7 @@ public class AppModule {
 
     @Singleton
     @Provides
-    public static CityRepo provideCityRepo(YelpApiService yelpApiService, CityDao cityDao) {
-        return new CityRepo(yelpApiService, cityDao);
+    public static MainRepo provideCityRepo(YelpApiService yelpApiService, CityDao cityDao) {
+        return new MainRepo(yelpApiService, cityDao);
     }
 }

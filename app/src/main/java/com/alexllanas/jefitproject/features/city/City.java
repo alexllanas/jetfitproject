@@ -12,18 +12,17 @@ import java.util.ArrayList;
 public class City {
 
     @NonNull
-    @PrimaryKey(autoGenerate = true)
-    public int cityId;
-
+    @PrimaryKey()
     public String name = "";
+
+    public ArrayList<String> businessIds = new ArrayList<>();
 
     public City(String name) {
         this.name = name;
     }
 
-    public City(String name, ArrayList<Business> businessList) {
-        this.name = name;
-    }
+
+
 
     public String getName() {
         return name;

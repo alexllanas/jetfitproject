@@ -1,4 +1,4 @@
-package com.alexllanas.jefitproject.features.city;
+package com.alexllanas.jefitproject.ui;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +13,8 @@ import com.alexllanas.jefitproject.data.network.Resource;
 import com.alexllanas.jefitproject.data.network.SearchResponse;
 import com.alexllanas.jefitproject.data.network.YelpApiService;
 import com.alexllanas.jefitproject.features.business.Business;
+import com.alexllanas.jefitproject.features.city.City;
+import com.alexllanas.jefitproject.features.city.CityWithBusinesses;
 import com.alexllanas.jefitproject.util.AppExecutors;
 import com.alexllanas.jefitproject.util.Constants;
 
@@ -20,13 +22,13 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-public class CityRepo {
+public class MainRepo {
 
     private final YelpApiService apiService;
     private final CityDao cityDao;
 
     @Inject
-    public CityRepo(YelpApiService apiService, CityDao cityDao) {
+    public MainRepo(YelpApiService apiService, CityDao cityDao) {
         this.apiService = apiService;
         this.cityDao = cityDao;
     }

@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.alexllanas.jefitproject.data.network.Resource;
 import com.alexllanas.jefitproject.features.business.Business;
-import com.alexllanas.jefitproject.features.city.CityRepo;
 
 import java.util.ArrayList;
 
@@ -19,10 +18,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class MainViewModel extends ViewModel {
 
     public MediatorLiveData<MainState> mainState = new MediatorLiveData<>();
-    private CityRepo cityRepo;
+    private MainRepo cityRepo;
 
     @Inject
-    public MainViewModel(CityRepo repo) {
+    public MainViewModel(MainRepo repo) {
         cityRepo = repo;
     }
 
