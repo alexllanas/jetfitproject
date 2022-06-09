@@ -15,6 +15,7 @@ import com.alexllanas.jefitproject.R;
 import com.alexllanas.jefitproject.databinding.FragmentBusinessBinding;
 import com.alexllanas.jefitproject.ui.MainActivity;
 import com.alexllanas.jefitproject.ui.MainViewModel;
+import com.alexllanas.jefitproject.util.NetworkHelper;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -25,6 +26,7 @@ public class BusinessFragment extends Fragment {
     private BusinessAdapter businessAdapter;
     private MainActivity mainActivity;
     private MainViewModel mainViewModel;
+    private NetworkHelper networkHelper;
 
     @Nullable
     @Override
@@ -44,6 +46,8 @@ public class BusinessFragment extends Fragment {
         String cityName = BusinessFragmentArgs.fromBundle(getArguments()).getCityName();
         mainViewModel.getBusinesses(cityName);
         configureToolbar(cityName);
+        networkHelper = new NetworkHelper(getActivity());
+
     }
 
     private void initRecyclerView() {
@@ -54,8 +58,11 @@ public class BusinessFragment extends Fragment {
 
     private void subscribeObservers() {
         mainViewModel.businessList().observe(getViewLifecycleOwner(), businessList -> {
+//            if (!networkHelper.isNetworkConnected() && businessList.isEmpty()) {
+//                binding.textNoResults.setVisibility(View.VISIBLE);
+//            } else {
             businessAdapter.submitList(businessList);
-//            businessAdapter.notifyDataSetChanged();
+//            }
         });
         mainViewModel.isLoading().observe(mainActivity, isLoading -> {
             if (isLoading) {

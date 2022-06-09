@@ -35,23 +35,16 @@ public abstract class NetworkBoundResource<CacheObject, RequestObject> {
         // observe LiveData source from local db
         final LiveData<CacheObject> dbSource = loadFromDb();
 
-        results.addSource(dbSource, new Observer<CacheObject>() {
-            @Override
-            public void onChanged(@Nullable CacheObject cacheObject) {
+        results.addSource(dbSource, cacheObject -> {
 
-                results.removeSource(dbSource);
+            results.removeSource(dbSource);
 
-                if (shouldFetch(cacheObject) && networkHelper.isNetworkConnected()) {
-                    // get data from the network
-                    fetchFromNetwork(dbSource);
-                } else {
-                    results.addSource(dbSource, new Observer<CacheObject>() {
-                        @Override
-                        public void onChanged(@Nullable CacheObject cacheObject) {
-                            setValue(Resource.success(cacheObject));
-                        }
-                    });
-                }
+            if (shouldFetch(cacheObject)) {
+                fetchFromNetwork(dbSource);
+            } else {
+                results.addSource(dbSource, cacheObject1 ->
+                        setValue(Resource.success(cacheObject1))
+                );
             }
         });
     }

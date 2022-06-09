@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.alexllanas.jefitproject.data.network.Resource;
 import com.alexllanas.jefitproject.features.business.Business;
 import com.alexllanas.jefitproject.features.city.City;
+import com.alexllanas.jefitproject.util.NetworkHelper;
 
 import java.util.ArrayList;
 
@@ -24,11 +25,13 @@ public class MainViewModel extends ViewModel {
     private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
 
     private final MainRepo repository;
+    private final NetworkHelper networkHelper;
     LiveData<Resource<ArrayList<Business>>> businessSource;
 
     @Inject
-    public MainViewModel(MainRepo repo) {
+    public MainViewModel(MainRepo repo, NetworkHelper networkHelper) {
         this.repository = repo;
+        this.networkHelper = networkHelper;
     }
 
     public LiveData<ArrayList<Business>> businessList() {

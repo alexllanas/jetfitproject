@@ -34,7 +34,7 @@ public class HomeFragment extends Fragment implements CityClickListener {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         mainActivity = ((MainActivity) requireActivity());
         mainViewModel = new ViewModelProvider(mainActivity).get(MainViewModel.class);
-        mainViewModel.getCities();
+//        mainViewModel.getCities();
 
         configureToolbar();
         initRecyclerView();

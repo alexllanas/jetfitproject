@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private void initViewModel() {
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mainViewModel.populateDatabase();
+        mainViewModel.getCities();
     }
 
     private void initNavigation() {

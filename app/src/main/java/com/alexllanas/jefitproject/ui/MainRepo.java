@@ -82,7 +82,7 @@ public class MainRepo {
 
             @Override
             protected boolean shouldFetch(@Nullable ArrayList<Business> data) {
-                return data == null || data.isEmpty();
+                return (data == null || data.isEmpty()) && networkHelper.isNetworkConnected();
             }
 
             /**
@@ -94,17 +94,20 @@ public class MainRepo {
             @Override
             protected LiveData<ArrayList<Business>> loadFromDb() {
                 ArrayList<Business> businesses = new ArrayList<>();
+                ArrayList<String> businessIds = new ArrayList<>();
                 AppExecutors.getInstance().diskIO().execute(() -> {
                     City city = cityDao.getCity(cityName);
                     if (city != null) {
-                        if (city.businessIds != null) {
-                            city.businessIds.forEach(id -> {
-                                businesses.add(businessDao.getBusiness(id));
-                            });
-
-                        }
+                        businessIds.addAll(city.businessIds);
                     }
                 });
+
+                AppExecutors.getInstance().diskIO().execute(() -> {
+                    businessIds.forEach(id -> {
+                        businesses.add(businessDao.getBusiness(id));
+                    });
+                });
+
                 return new MutableLiveData<>(businesses);
             }
 
@@ -113,6 +116,8 @@ public class MainRepo {
             protected LiveData<ApiResponse<SearchResponse>> createCall() {
                 return apiService.getBusinesses(Constants.API_KEY_TOKEN, cityName);
             }
-        }.getAsLiveData();
+        }.
+
+                getAsLiveData();
     }
 }
