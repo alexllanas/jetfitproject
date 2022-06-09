@@ -1,5 +1,6 @@
 package com.alexllanas.jefitproject.features.business;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -9,23 +10,26 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.Map;
 
-@Entity
+@Entity(tableName = "businesses")
 public class Business {
 
+
+    @NonNull
     @PrimaryKey
-    public String id;
+    @SerializedName("id")
+    public String businessId;
 
     public String name = "";
     public int rating;
-    public ArrayList<Map<String, String>> categories;
+    public ArrayList<String> categories;
     public Location location;
     public ArrayList<Review> reviews;
     public boolean isLiked;
     @SerializedName("image_url")
     public String imageUrl = "";
 
-    public Business(String id, String name, int rating, ArrayList<Map<String, String>> categories, Location location, ArrayList<Review> reviews, boolean isLiked, String imageUrl) {
-        this.id = id;
+    public Business(String businessId, String name, int rating, ArrayList<String> categories, Location location, ArrayList<Review> reviews, boolean isLiked, String imageUrl) {
+        this.businessId = businessId;
         this.name = name;
         this.rating = rating;
         this.categories = categories;
@@ -35,12 +39,12 @@ public class Business {
         this.imageUrl = imageUrl;
     }
 
-    public String getId() {
-        return id;
+    public String getBusinessId() {
+        return businessId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
     }
 
     public String getName() {
@@ -59,11 +63,11 @@ public class Business {
         this.rating = rating;
     }
 
-    public ArrayList<Map<String, String>> getCategories() {
+    public ArrayList<String> getCategories() {
         return categories;
     }
 
-    public void setCategories(ArrayList<Map<String, String>> categories) {
+    public void setCategories(ArrayList<String> categories) {
         this.categories = categories;
     }
 
@@ -98,6 +102,4 @@ public class Business {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-
-
 }

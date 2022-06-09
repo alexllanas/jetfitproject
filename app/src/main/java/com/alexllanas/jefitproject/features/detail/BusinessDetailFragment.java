@@ -27,7 +27,7 @@ public class BusinessDetailFragment extends Fragment {
 
     private void configureToolbar() {
         // Use SafeArgs to pass City name when navigating to this fragment and set name in title.
-        mainActivity.setToolbarTitle(R.string.temp_string);
+        mainActivity.setToolbarTitle(getString(R.string.temp_string));
         mainActivity.setBackNavigationIcon(true);
     }
 }

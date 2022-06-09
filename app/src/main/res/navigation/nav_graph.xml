@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.alexllanas.jefitproject.features.city.HomeFragment"
-        android:label="HomeFragment" >
+        android:label="HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_businessFragment"
             app:destination="@id/businessFragment" />
@@ -15,7 +15,7 @@
     <fragment
         android:id="@+id/businessFragment"
         android:name="com.alexllanas.jefitproject.features.business.BusinessFragment"
-        android:label="BusinessFragment" >
+        android:label="BusinessFragment">
         <action
             android:id="@+id/action_businessFragment_to_businessDetailFragment"
             app:destination="@id/businessDetailFragment" />

@@ -1,5 +1,6 @@
 package com.alexllanas.jefitproject.features.city;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -7,15 +8,14 @@ import com.alexllanas.jefitproject.features.business.Business;
 
 import java.util.ArrayList;
 
-@Entity
+@Entity(tableName = "cities")
 public class City {
 
+    @NonNull
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    public int cityId;
 
     public String name = "";
-
-    public ArrayList<Business> businessList = new ArrayList<>();
 
     public City(String name) {
         this.name = name;
@@ -23,7 +23,6 @@ public class City {
 
     public City(String name, ArrayList<Business> businessList) {
         this.name = name;
-        this.businessList = businessList;
     }
 
     public String getName() {
@@ -32,14 +31,6 @@ public class City {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ArrayList<Business> getBusinessList() {
-        return businessList;
-    }
-
-    public void setBusinessList(ArrayList<Business> businessList) {
-        this.businessList = businessList;
     }
 
 }

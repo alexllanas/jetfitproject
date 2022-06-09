@@ -24,14 +24,16 @@ public class BusinessFragment extends Fragment {
         binding = FragmentBusinessBinding.inflate(inflater, container, false);
         mainActivity = ((MainActivity) requireActivity());
 
-        configureToolbar();
+        String cityName = BusinessFragmentArgs.fromBundle(getArguments()).getCityName();
+        configureToolbar(cityName);
 
         return binding.getRoot();
     }
 
-    private void configureToolbar() {
+    private void configureToolbar(String cityName) {
         // Use SafeArgs to pass City name when navigating to this fragment and set name in title.
-        mainActivity.setToolbarTitle(R.string.business_list_title);
+
+        mainActivity.setToolbarTitle(getResources().getString(R.string.business_list_title, cityName));
         mainActivity.setBackNavigationIcon(true);
     }
 
