@@ -11,6 +11,19 @@ public class MainState {
     public ArrayList<Business> businessList = new ArrayList<>();
     public ArrayList<Review> reviewList = new ArrayList<>();
     public Business business;
+    public boolean isLoading;
+
+
+    public MainState() {
+    }
+
+    public MainState(ArrayList<City> cityList, ArrayList<Business> businessList, ArrayList<Review> reviewList, Business business, boolean isLoading) {
+        this.cityList = cityList;
+        this.businessList = businessList;
+        this.reviewList = reviewList;
+        this.business = business;
+        this.isLoading = isLoading;
+    }
 
     public ArrayList<City> getCityList() {
         return cityList;
@@ -43,4 +56,17 @@ public class MainState {
     public void setBusiness(Business business) {
         this.business = business;
     }
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setLoading(boolean loading) {
+        isLoading = loading;
+    }
+
+    public MainState copy() {
+        return new MainState(cityList, businessList, reviewList, business, isLoading);
+    }
+
 }

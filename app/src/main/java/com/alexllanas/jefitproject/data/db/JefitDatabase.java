@@ -11,4 +11,6 @@ import com.alexllanas.jefitproject.features.city.City;
 @TypeConverters(ObjectConverter.class)
 public abstract class JefitDatabase extends RoomDatabase {
 
+    public abstract CityDao cityDao();
+
 }

@@ -7,7 +7,9 @@ import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.core.ImageTranscoderType;
 import com.facebook.imagepipeline.core.MemoryChunkType;
 
+import dagger.hilt.android.HiltAndroidApp;
 
+@HiltAndroidApp
 public class MainApplication extends Application {
     @Override
     public void onCreate() {
