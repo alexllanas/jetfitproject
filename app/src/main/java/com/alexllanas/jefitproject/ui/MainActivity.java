@@ -2,6 +2,7 @@ package com.alexllanas.jefitproject.ui;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -11,23 +12,28 @@ import android.view.View;
 import com.alexllanas.jefitproject.R;
 import com.google.android.material.appbar.MaterialToolbar;
 
+import dagger.hilt.EntryPoint;
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     public NavController navController;
     private MaterialToolbar toolbar;
+    private MainViewModel mainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupToolbar();
-
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        mainViewModel.populateDatabase();
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
         }
-
     }
 
     private void setupToolbar() {

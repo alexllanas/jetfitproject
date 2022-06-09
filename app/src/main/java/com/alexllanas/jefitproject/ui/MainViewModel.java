@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.alexllanas.jefitproject.data.network.Resource;
 import com.alexllanas.jefitproject.features.business.Business;
+import com.alexllanas.jefitproject.features.city.City;
 
 import java.util.ArrayList;
 
@@ -18,21 +19,20 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class MainViewModel extends ViewModel {
 
     public MediatorLiveData<MainState> mainState = new MediatorLiveData<>();
-    private MainRepo cityRepo;
+    private final MainRepo repository;
 
     @Inject
     public MainViewModel(MainRepo repo) {
-        cityRepo = repo;
+        this.repository = repo;
     }
 
     public void getBusinesses(String city) {
-
-        LiveData<Resource<ArrayList<Business>>> repoSource = cityRepo.getBusinesses(city);
-        mainState.addSource(repoSource, arrayListResource -> {
-            if (arrayListResource.status == Resource.Status.SUCCESS) {
+        LiveData<Resource<ArrayList<Business>>> repoSource = repository.getBusinesses(city);
+        mainState.addSource(repoSource, resource -> {
+            if (resource.status == Resource.Status.SUCCESS) {
                 MainState currentState = getCurrentOrNewState();
                 MainState newState = currentState.copy();
-                newState.setBusinessList(arrayListResource.data);
+                newState.setBusinessList(resource.data);
                 newState.setLoading(false);
                 mainState.setValue(newState);
             }
@@ -40,9 +40,25 @@ public class MainViewModel extends ViewModel {
         });
     }
 
+    public void getCities() {
+        LiveData<ArrayList<City>> repoSource = repository.getCities();
+        mainState.addSource(repoSource, cityList -> {
+                MainState currentState = getCurrentOrNewState();
+                MainState newState = currentState.copy();
+                newState.setCityList(cityList);
+                newState.setLoading(false);
+                mainState.setValue(newState);
+        });
+    }
+
+
     private MainState getCurrentOrNewState() {
         MainState currentState = mainState.getValue();
         if (currentState != null) return currentState;
         return new MainState();
+    }
+
+    public void populateDatabase() {
+        repository.populateDatabase();
     }
 }

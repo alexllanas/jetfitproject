@@ -2,6 +2,7 @@ package com.alexllanas.jefitproject.features.city;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.alexllanas.jefitproject.features.business.Business;
@@ -12,17 +13,20 @@ import java.util.ArrayList;
 public class City {
 
     @NonNull
-    @PrimaryKey()
+    @PrimaryKey
     public String name = "";
 
     public ArrayList<String> businessIds = new ArrayList<>();
 
+    @Ignore
     public City(String name) {
         this.name = name;
     }
 
-
-
+    public City(@NonNull String name, ArrayList<String> businessIds) {
+        this.name = name;
+        this.businessIds = businessIds;
+    }
 
     public String getName() {
         return name;
@@ -32,4 +36,11 @@ public class City {
         this.name = name;
     }
 
+    public ArrayList<String> getBusinessIds() {
+        return businessIds;
+    }
+
+    public void setBusinessIds(ArrayList<String> businessIds) {
+        this.businessIds = businessIds;
+    }
 }

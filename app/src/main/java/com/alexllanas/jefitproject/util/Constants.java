@@ -5,7 +5,7 @@ public class Constants {
     /**
      * Network
      */
-    public static final String API_BASE_URL = "https://api.yelp.com/v3";
+    public static final String API_BASE_URL = "https://api.yelp.com/v3/";
 
     /**
      * Note: I would usually store this in an environment variable on my machine

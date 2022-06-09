@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class StaticData {
-    public static ArrayList<City> CITY_NAMES = new ArrayList<City>(
+    public static ArrayList<City> CITIES = new ArrayList<City>(
             Arrays.asList(
                     new City("San Francisco"),
                     new City("Los Angeles"),

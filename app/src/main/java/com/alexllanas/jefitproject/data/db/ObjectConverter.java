@@ -27,14 +27,14 @@ public class ObjectConverter {
     }
 
     @TypeConverter
-    public static String fromReviewList(List<Review> reviews) {
+    public static String fromReviewList(ArrayList<Review> reviews) {
         Gson gson = new Gson();
         return gson.toJson(reviews);
     }
 
     @TypeConverter
-    public static List<Review> toReviewList(String json) {
-        Type entityType = new TypeToken<List<Review>>() {
+    public static ArrayList<Review> toReviewList(String json) {
+        Type entityType = new TypeToken<ArrayList<Review>>() {
         }.getType();
         return new Gson().fromJson(json, entityType);
     }

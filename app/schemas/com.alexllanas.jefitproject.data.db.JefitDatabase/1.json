@@ -2,30 +2,30 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a04e4fd524ea35d464a115cfc879cdfd",
+    "identityHash": "f86b9e535e684f1899c04ffff8b88fc6",
     "entities": [
       {
         "tableName": "cities",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cityId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `businessIds` TEXT, PRIMARY KEY(`name`))",
         "fields": [
-          {
-            "fieldPath": "cityId",
-            "columnName": "cityId",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "name",
             "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "businessIds",
+            "columnName": "businessIds",
             "affinity": "TEXT",
             "notNull": false
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "cityId"
+            "name"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -96,7 +96,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a04e4fd524ea35d464a115cfc879cdfd')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f86b9e535e684f1899c04ffff8b88fc6')"
     ]
   }
 }
