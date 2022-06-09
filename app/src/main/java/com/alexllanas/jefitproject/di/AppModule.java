@@ -1,6 +1,7 @@
 package com.alexllanas.jefitproject.di;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.room.Room;
 
@@ -12,15 +13,15 @@ import com.alexllanas.jefitproject.data.network.NetworkInterceptor;
 import com.alexllanas.jefitproject.data.network.YelpApiService;
 import com.alexllanas.jefitproject.ui.MainRepo;
 import com.alexllanas.jefitproject.util.Constants;
+import com.alexllanas.jefitproject.util.NetworkHelper;
 
 import javax.inject.Singleton;
 
-import dagger.Component;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
-import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -28,6 +29,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 @InstallIn(SingletonComponent.class)
 public class AppModule {
+    @Singleton
+    @Provides
+    public static NetworkHelper provideNetworkHelper(@ApplicationContext Context context) {
+        return new NetworkHelper(context);
+    }
+
 
     @Singleton
     @Provides
@@ -78,8 +85,8 @@ public class AppModule {
 
     @Singleton
     @Provides
-    public static MainRepo provideCityRepo(YelpApiService yelpApiService, CityDao cityDao, BusinessDao businessDao) {
-        return new MainRepo(yelpApiService, cityDao, businessDao);
+    public static MainRepo provideCityRepo(YelpApiService yelpApiService, CityDao cityDao, BusinessDao businessDao, NetworkHelper networkHelper) {
+        return new MainRepo(yelpApiService, cityDao, businessDao, networkHelper);
     }
 
 }

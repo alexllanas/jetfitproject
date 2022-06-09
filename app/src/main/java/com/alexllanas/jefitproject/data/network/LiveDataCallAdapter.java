@@ -27,7 +27,7 @@ public class LiveDataCallAdapter<R> implements CallAdapter<R, LiveData<ApiRespon
     @NonNull
     @Override
     public LiveData<ApiResponse<R>> adapt(@NonNull Call<R> call) {
-        return new LiveData<ApiResponse<R>>(){
+        return new LiveData<ApiResponse<R>>() {
             @Override
             protected void onActive() {
                 super.onActive();

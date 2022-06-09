@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.alexllanas.jefitproject.R;
+import com.alexllanas.jefitproject.databinding.ActivityMainBinding;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import dagger.hilt.EntryPoint;
@@ -18,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
+    private ActivityMainBinding binding;
     public NavController navController;
     private MaterialToolbar toolbar;
     private MainViewModel mainViewModel;
@@ -25,15 +27,36 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        initViewModel();
         setupToolbar();
+        subscribeObservers();
+        initNavigation();
+    }
+
+    private void initViewModel() {
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mainViewModel.populateDatabase();
+    }
+
+    private void initNavigation() {
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
         }
+    }
+
+    private void subscribeObservers() {
+        mainViewModel.isLoading().observe(this, isLoading -> {
+            if (isLoading) {
+                binding.progressCircular.setVisibility(View.VISIBLE);
+            } else {
+                binding.progressCircular.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void setupToolbar() {

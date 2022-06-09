@@ -9,13 +9,13 @@ import retrofit2.http.Query;
 
 public interface YelpApiService {
 
-    @GET("businesses/search")
+    @GET("businesses/search?limit=10")
     LiveData<ApiResponse<SearchResponse>> getBusinesses(
             @Header("Authorization") String token,
             @Query("location") String city
     );
 
-    @GET("/businesses/{id}/reviews")
+    @GET("/businesses/{id}/reviews?limit=3")
     LiveData<ApiResponse<ReviewResponse>> getReviews(
             @Header("Authorization") String token,
             @Path("id") String id

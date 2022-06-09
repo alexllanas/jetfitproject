@@ -9,7 +9,6 @@ import androidx.room.TypeConverters;
 
 import com.alexllanas.jefitproject.features.business.Business;
 import com.alexllanas.jefitproject.features.city.City;
-import com.alexllanas.jefitproject.util.StaticData;
 
 @Database(entities = {City.class, Business.class}, version = 1)
 @TypeConverters(ObjectConverter.class)

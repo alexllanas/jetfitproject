@@ -8,14 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alexllanas.jefitproject.R;
 import com.alexllanas.jefitproject.databinding.FragmentBusinessBinding;
 import com.alexllanas.jefitproject.ui.MainActivity;
-import com.alexllanas.jefitproject.ui.MainState;
 import com.alexllanas.jefitproject.ui.MainViewModel;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -33,20 +31,39 @@ public class BusinessFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentBusinessBinding.inflate(inflater, container, false);
         mainActivity = ((MainActivity) requireActivity());
-        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        mainViewModel = new ViewModelProvider(mainActivity).get(MainViewModel.class);
 
-        String cityName = BusinessFragmentArgs.fromBundle(getArguments()).getCityName();
-        configureToolbar(cityName);
-
-        businessAdapter = new BusinessAdapter();
-        binding.recyclerViewBusiness.setAdapter(businessAdapter);
-        binding.recyclerViewBusiness.setLayoutManager(new LinearLayoutManager(mainActivity));
-        mainViewModel.mainState.observe(mainActivity, mainState -> {
-            businessAdapter.submitList(mainState.businessList);
-        });
-
+        setupUI();
+        initRecyclerView();
+        subscribeObservers();
 
         return binding.getRoot();
+    }
+
+    private void setupUI() {
+        String cityName = BusinessFragmentArgs.fromBundle(getArguments()).getCityName();
+        mainViewModel.getBusinesses(cityName);
+        configureToolbar(cityName);
+    }
+
+    private void initRecyclerView() {
+        businessAdapter = new BusinessAdapter();
+        binding.recyclerViewBusiness.setAdapter(businessAdapter);
+        binding.recyclerViewBusiness.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    private void subscribeObservers() {
+        mainViewModel.businessList().observe(getViewLifecycleOwner(), businessList -> {
+            businessAdapter.submitList(businessList);
+//            businessAdapter.notifyDataSetChanged();
+        });
+        mainViewModel.isLoading().observe(mainActivity, isLoading -> {
+            if (isLoading) {
+                binding.recyclerViewBusiness.setVisibility(View.GONE);
+            } else {
+                binding.recyclerViewBusiness.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void configureToolbar(String cityName) {

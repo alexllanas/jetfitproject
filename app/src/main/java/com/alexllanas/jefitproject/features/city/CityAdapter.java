@@ -42,6 +42,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
 
     public void submitList(ArrayList<City> items) {
         cities = items;
+        notifyDataSetChanged();
     }
 
     public City getCity(int position) {

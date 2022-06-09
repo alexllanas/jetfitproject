@@ -10,6 +10,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ObjectConverter {
 
@@ -51,4 +52,19 @@ public class ObjectConverter {
         }.getType();
         return new Gson().fromJson(json, entityType);
     }
+
+    @TypeConverter
+    public static String fromMapList(ArrayList<Map<String, String>> location) {
+        Gson gson = new Gson();
+        return gson.toJson(location);
+    }
+
+    @TypeConverter
+    public static ArrayList<Map<String, String>> toMapList(String json) {
+        Type entityType = new TypeToken<ArrayList<Map<String, String>>>() {
+        }.getType();
+        return new Gson().fromJson(json, entityType);
+    }
+
+
 }

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,9 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.alexllanas.jefitproject.R;
 import com.alexllanas.jefitproject.databinding.FragmentHomeBinding;
 import com.alexllanas.jefitproject.ui.MainActivity;
-import com.alexllanas.jefitproject.ui.MainState;
 import com.alexllanas.jefitproject.ui.MainViewModel;
-import com.alexllanas.jefitproject.util.StaticData;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -36,8 +33,7 @@ public class HomeFragment extends Fragment implements CityClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         mainActivity = ((MainActivity) requireActivity());
-        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-
+        mainViewModel = new ViewModelProvider(mainActivity).get(MainViewModel.class);
         mainViewModel.getCities();
 
         configureToolbar();
@@ -54,9 +50,18 @@ public class HomeFragment extends Fragment implements CityClickListener {
     private void initRecyclerView() {
         cityAdapter = new CityAdapter(this);
 
-        mainViewModel.mainState.observe(mainActivity, mainState -> {
-            cityAdapter.submitList(mainState.cityList);
+        mainViewModel.cityList().observe(getViewLifecycleOwner(), cityList -> {
+            cityAdapter.submitList(cityList);
         });
+
+        mainViewModel.isLoading().observe(mainActivity, isLoading -> {
+            if (isLoading) {
+                binding.recyclerViewCity.setVisibility(View.GONE);
+            } else {
+                binding.recyclerViewCity.setVisibility(View.VISIBLE);
+            }
+        });
+
 
         binding.recyclerViewCity.setAdapter(cityAdapter);
         binding.recyclerViewCity.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -66,7 +71,6 @@ public class HomeFragment extends Fragment implements CityClickListener {
     @Override
     public void onCityClicked(int position) {
         String cityName = cityAdapter.getCity(position).getName();
-        mainViewModel.getBusinesses(cityName);
         Navigation
                 .findNavController(binding.getRoot())
                 .navigate(

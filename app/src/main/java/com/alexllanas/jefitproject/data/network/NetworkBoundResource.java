@@ -9,6 +9,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 
 import com.alexllanas.jefitproject.util.AppExecutors;
+import com.alexllanas.jefitproject.util.NetworkHelper;
 
 // CacheObject: Type for the Resource data. (database cache)
 // RequestObject: Type for the API response. (network request)
@@ -18,9 +19,11 @@ public abstract class NetworkBoundResource<CacheObject, RequestObject> {
 
     private AppExecutors appExecutors;
     private MediatorLiveData<Resource<CacheObject>> results = new MediatorLiveData<>();
+    private final NetworkHelper networkHelper;
 
-    public NetworkBoundResource(AppExecutors appExecutors) {
+    public NetworkBoundResource(AppExecutors appExecutors, NetworkHelper networkHelper) {
         this.appExecutors = appExecutors;
+        this.networkHelper = networkHelper;
         init();
     }
 
@@ -38,7 +41,7 @@ public abstract class NetworkBoundResource<CacheObject, RequestObject> {
 
                 results.removeSource(dbSource);
 
-                if (shouldFetch(cacheObject)) {
+                if (shouldFetch(cacheObject) && networkHelper.isNetworkConnected()) {
                     // get data from the network
                     fetchFromNetwork(dbSource);
                 } else {
