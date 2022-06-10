@@ -64,7 +64,7 @@ public class MainRepo {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (result == null) {
+            if (result == null || result.isEmpty()) {
                 cityDao.insertCities(StaticData.CITIES);
                 result = cityDao.getCities();
             }
