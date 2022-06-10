@@ -29,6 +29,7 @@ public class BusinessFragment extends Fragment implements BusinessClickListener 
     private BusinessAdapter businessAdapter;
     private MainActivity mainActivity;
     private MainViewModel mainViewModel;
+    private String cityName;
     private NetworkHelper networkHelper;
 
     @Nullable
@@ -46,7 +47,7 @@ public class BusinessFragment extends Fragment implements BusinessClickListener 
     }
 
     private void setupUI() {
-        String cityName = BusinessFragmentArgs.fromBundle(getArguments()).getCityName();
+        cityName = BusinessFragmentArgs.fromBundle(getArguments()).getCityName();
         mainViewModel.getBusinesses(cityName);
         configureToolbar(cityName);
         networkHelper = new NetworkHelper(getActivity());
@@ -89,5 +90,6 @@ public class BusinessFragment extends Fragment implements BusinessClickListener 
     public void onLikeButtonClicked(int position) {
         Business business = businessAdapter.getBusiness(position);
         mainViewModel.likeBusiness(business);
+        mainViewModel.getBusinesses(cityName);
     }
 }

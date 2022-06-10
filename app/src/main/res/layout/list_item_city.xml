@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
-    android:minHeight="?attr/minTouchTargetSize">
+    android:minHeight="64dp">
 
     <TextView
         android:id="@+id/city_name"
@@ -14,7 +14,7 @@
         android:maxLines="1"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:textAppearance="?attr/textAppearanceSubtitle1"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/material_on_background_emphasis_medium"
         tools:text="City" />
 
