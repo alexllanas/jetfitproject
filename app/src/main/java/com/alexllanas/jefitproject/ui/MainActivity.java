@@ -7,8 +7,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import com.alexllanas.jefitproject.BuildConfig;
 import com.alexllanas.jefitproject.R;
 import com.alexllanas.jefitproject.databinding.ActivityMainBinding;
 import com.google.android.material.appbar.MaterialToolbar;

@@ -105,32 +105,38 @@ public class MainViewModel extends ViewModel {
 
     public void getReviews(String businessId) {
         if (reviewSource != null) {
-            _reviews.removeSource(reviewSource);
+            _business.removeSource(reviewSource);
         }
-        _isLoading.setValue(true);
+
+        getBusiness(businessId);
         reviewSource = repository.getReviews(businessId);
-        _reviews.addSource(reviewSource, resource -> {
+        _business.addSource(reviewSource, resource -> {
             if (resource.status == Resource.Status.SUCCESS) {
-                _reviews.setValue(resource.data);
-                _isLoading.setValue(false);
+                Business updateBusiness = _business.getValue();
+                if (updateBusiness != null) {
+                    updateBusiness.reviews = resource.data;
+                    _business.setValue(updateBusiness);
+                }
+//                _isLoading.setValue(false);
             } else if (resource.status == Resource.Status.LOADING) {
-                _isLoading.setValue(true);
+//                _isLoading.setValue(true);
             }
         });
     }
 
     public void getBusinessDetails(String businessId) {
-        AppExecutors.getInstance().mainThread().execute(new Runnable() {
-            @Override
-            public void run() {
-                getReviews(businessId);
-            }
-        });
-        AppExecutors.getInstance().mainThread().execute(new Runnable() {
-            @Override
-            public void run() {
-                getBusiness(businessId);
-            }
-        });
+
+//        AppExecutors.getInstance().mainThread().execute(new Runnable() {
+//            @Override
+//            public void run() {
+        getReviews(businessId);
+//            }
+//        });
+//        AppExecutors.getInstance().mainThread().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                getBusiness(businessId);
+//            }
+//        });
     }
 }

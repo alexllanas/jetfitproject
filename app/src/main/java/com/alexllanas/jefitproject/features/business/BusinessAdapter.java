@@ -100,7 +100,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
     DiffUtil.ItemCallback<Business> DIFF_CALLBACK = new DiffUtil.ItemCallback<Business>() {
         @Override
         public boolean areItemsTheSame(@NonNull Business oldItem, @NonNull Business newItem) {
-            return oldItem.businessId == newItem.businessId;
+            return oldItem.businessId.equals(newItem.businessId);
         }
 
         @Override

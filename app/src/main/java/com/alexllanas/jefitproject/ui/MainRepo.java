@@ -173,7 +173,8 @@ public class MainRepo {
                 CountDownLatch latch = new CountDownLatch(1);
                 ArrayList<Review> reviews = new ArrayList<>();
                 AppExecutors.getInstance().diskIO().execute(() -> {
-                    ArrayList<Review> results = businessDao.getBusiness(businessId).reviews;
+                    Business temp  = businessDao.getBusiness(businessId);
+                    ArrayList<Review> results = temp.reviews;
                     if (results != null) {
                         reviews.addAll(results);
                     }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alexllanas.jefitproject.BuildConfig;
 import com.alexllanas.jefitproject.R;
 import com.alexllanas.jefitproject.databinding.FragmentBusinessDetailBinding;
 import com.alexllanas.jefitproject.features.business.Business;
 import com.alexllanas.jefitproject.features.business.Location;
 import com.alexllanas.jefitproject.ui.MainActivity;
 import com.alexllanas.jefitproject.ui.MainViewModel;
+import com.facebook.common.logging.LoggingDelegate;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -62,13 +65,20 @@ public class BusinessDetailFragment extends Fragment {
     private void getData() {
         String businessId = BusinessDetailFragmentArgs.fromBundle(getArguments()).getBusinessId();
         mainViewModel.getBusinessDetails(businessId);
-//        mainViewModel.getReviews(businessId);
-//        mainViewModel.getBusiness(businessId);
     }
 
     private void subscribeObservers() {
         mainViewModel.business().observe(mainActivity, this::setupUI);
-        mainViewModel.reviewsList().observe(mainActivity, reviews -> reviewAdapter.submitList(reviews));
+        mainViewModel.isLoading().observe(mainActivity, isLoading -> {
+            if (isLoading) {
+//                binding.recyclerViewBusiness.setVisibility(View.GONE);
+                binding.getRoot().setAlpha(0.2f);
+            } else {
+//                binding.recyclerViewBusiness.setVisibility(View.VISIBLE);
+                binding.getRoot().setAlpha(1f);
+//                binding.recyclerViewBusiness.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void setupUI(Business business) {
@@ -78,6 +88,9 @@ public class BusinessDetailFragment extends Fragment {
     }
 
     private void setupDetails(Business business) {
+//        if (business.reviews != null) {
+        reviewAdapter.submitList(business.reviews);
+//        }
         binding.detailsSection.textRating.setText(getString(R.string.rating, business.rating));
         binding.detailsSection.textCategory.setText(getCategoryText(business.categories));
         binding.detailsSection.textAddress.setText(getAddressText(business.location));
@@ -104,6 +117,7 @@ public class BusinessDetailFragment extends Fragment {
         }
         String lastCategory = categories.get(categories.size() - 1).get("title");
         stringBuilder.append(lastCategory);
+
         return stringBuilder.toString();
     }
 
