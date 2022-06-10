@@ -80,10 +80,11 @@ public class BusinessFragment extends Fragment implements BusinessClickListener 
 
     @Override
     public void onBusinessClicked(int position) {
+        Business business = businessAdapter.getBusiness(position);
         Navigation
                 .findNavController(binding.getRoot())
                 .navigate(
-                        BusinessFragmentDirections.actionBusinessFragmentToBusinessDetailFragment());
+                        BusinessFragmentDirections.actionBusinessFragmentToBusinessDetailFragment(business.businessId));
     }
 
     @Override

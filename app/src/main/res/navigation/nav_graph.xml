@@ -26,5 +26,9 @@
     <fragment
         android:id="@+id/businessDetailFragment"
         android:name="com.alexllanas.jefitproject.features.detail.BusinessDetailFragment"
-        android:label="BusinessDetailFragment" />
+        android:label="BusinessDetailFragment" >
+        <argument
+            android:name="businessId"
+            app:argType="string" />
+    </fragment>
 </navigation>

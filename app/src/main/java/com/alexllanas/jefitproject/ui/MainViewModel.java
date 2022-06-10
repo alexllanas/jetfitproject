@@ -22,6 +22,7 @@ public class MainViewModel extends ViewModel {
 
     private final MediatorLiveData<ArrayList<City>> _cities = new MediatorLiveData<>();
     private final MediatorLiveData<ArrayList<Business>> _businesses = new MediatorLiveData<>();
+    private final MediatorLiveData<Business> _business = new MediatorLiveData<>();
     private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
 
     private final MainRepo repository;
@@ -36,6 +37,10 @@ public class MainViewModel extends ViewModel {
 
     public LiveData<ArrayList<Business>> businessList() {
         return _businesses;
+    }
+
+    public LiveData<Business> business() {
+        return _business;
     }
 
     public LiveData<ArrayList<City>> cityList() {
@@ -78,4 +83,15 @@ public class MainViewModel extends ViewModel {
     public void likeBusiness(Business business) {
         repository.likeBusiness(business);
     }
+
+    public void getBusiness(String businessId) {
+        _isLoading.setValue(true);
+        LiveData<Business> repoSource = repository.getBusiness(businessId);
+        _business.addSource(repoSource, business -> {
+            _business.setValue(business);
+            _isLoading.setValue(false);
+            _business.removeSource(repoSource);
+        });
+    }
+
 }

@@ -1,6 +1,11 @@
 package com.alexllanas.jefitproject.features.business;
 
+import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,25 +16,25 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
-@Entity(tableName = "businesses")
-public class Business {
 
+@Entity(tableName = "businesses")
+public class Business implements Parcelable {
 
     @NonNull
     @PrimaryKey
     @SerializedName("id")
     public String businessId;
-
     public String name = "";
     public String rating;
-    //    public ArrayList<String> categories;
     public ArrayList<Map<String, String>> categories;
-
     public Location location;
     public ArrayList<Review> reviews;
     public boolean isLiked;
     @SerializedName("image_url")
     public String imageUrl = "";
+
+    public Business() {
+    }
 
     public Business(@NonNull String businessId, String name, String rating, ArrayList<Map<String, String>> categories, Location location, ArrayList<Review> reviews, boolean isLiked, String imageUrl) {
         this.businessId = businessId;
@@ -41,6 +46,27 @@ public class Business {
         this.isLiked = isLiked;
         this.imageUrl = imageUrl;
     }
+
+    protected Business(Parcel in) {
+        businessId = in.readString();
+        name = in.readString();
+        rating = in.readString();
+        location = in.readParcelable(Location.class.getClassLoader());
+        isLiked = in.readByte() != 0;
+        imageUrl = in.readString();
+    }
+
+    public static final Creator<Business> CREATOR = new Creator<Business>() {
+        @Override
+        public Business createFromParcel(Parcel in) {
+            return new Business(in);
+        }
+
+        @Override
+        public Business[] newArray(int size) {
+            return new Business[size];
+        }
+    };
 
     public String getBusinessId() {
         return businessId;
@@ -106,6 +132,17 @@ public class Business {
         this.imageUrl = imageUrl;
     }
 
+    public void from(Business business) {
+        this.businessId = business.businessId;
+        this.name = business.name;
+        this.rating = business.rating;
+        this.categories = business.categories;
+        this.location = business.location;
+        this.reviews = business.reviews;
+        this.isLiked = business.isLiked;
+        this.imageUrl = business.imageUrl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -117,5 +154,23 @@ public class Business {
     @Override
     public int hashCode() {
         return Objects.hash(businessId, name, rating, categories, location, reviews, isLiked, imageUrl);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.businessId);
+        dest.writeString(this.name);
+        dest.writeString(this.rating);
+        dest.writeString(this.imageUrl);
+        dest.writeBoolean(this.isLiked);
+        dest.writeList(this.reviews);
+        dest.writeParcelable(this.location, 0);
+        dest.writeList(categories);
     }
 }

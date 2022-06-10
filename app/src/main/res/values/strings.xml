@@ -6,4 +6,5 @@
     <string name="business_list_title">Businesses in %1$s</string>
     <string name="temp_string">Business Name</string>
     <string name="no_results">No results.</string>
+    <string name="rating">%1$s / 5</string>
 </resources>

@@ -133,4 +133,20 @@ public class MainRepo {
 
                 getAsLiveData();
     }
+
+    public LiveData<Business> getBusiness(String businessId) {
+        Business business = new Business();
+        CountDownLatch latch = new CountDownLatch(1);
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            Business temp = businessDao.getBusiness(businessId);
+            business.from(temp);
+            latch.countDown();
+        });
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return new MutableLiveData<>(business);
+    }
 }

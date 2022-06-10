@@ -87,4 +87,8 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setNavigationIcon(null);
         }
     }
+
+    public void setTranslucentToolBar(Boolean setTransluscent) {
+        if ()
+    }
 }
