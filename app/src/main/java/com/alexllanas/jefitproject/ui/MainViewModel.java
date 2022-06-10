@@ -86,7 +86,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public void populateDatabase() {
-        repository.populateDatabase();
+//        repository.populateDatabase();
     }
 
     public void likeBusiness(Business business) {

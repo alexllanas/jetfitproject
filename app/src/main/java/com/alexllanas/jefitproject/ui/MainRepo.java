@@ -27,6 +27,7 @@ import com.alexllanas.jefitproject.util.StaticData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ScheduledExecutorService;
 
 import javax.inject.Inject;
 
@@ -55,10 +56,19 @@ public class MainRepo {
     public LiveData<ArrayList<City>> getCities() {
         ArrayList<City> cities = new ArrayList<>();
         AppExecutors.getInstance().diskIO().execute(() -> {
+            CountDownLatch latch = new CountDownLatch(1);
             List<City> result = cityDao.getCities();
-            if (result != null) {
-                cities.addAll(result);
+            latch.countDown();
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            if (result == null) {
+                cityDao.insertCities(StaticData.CITIES);
+                result = cityDao.getCities();
+            }
+            cities.addAll(result);
         });
         return new MutableLiveData<>(cities);
     }
@@ -101,7 +111,7 @@ public class MainRepo {
             @NonNull
             @Override
             protected LiveData<ArrayList<Business>> loadFromDb() {
-                CountDownLatch latch = new CountDownLatch(1);
+                CountDownLatch latch = new CountDownLatch(2);
                 ArrayList<Business> businesses = new ArrayList<>();
                 ArrayList<String> businessIds = new ArrayList<>();
                 AppExecutors.getInstance().diskIO().execute(() -> {
@@ -109,6 +119,7 @@ public class MainRepo {
                     if (city != null) {
                         businessIds.addAll(city.businessIds);
                     }
+                    latch.countDown();
                 });
 
                 AppExecutors.getInstance().diskIO().execute(() -> {
@@ -173,7 +184,7 @@ public class MainRepo {
                 CountDownLatch latch = new CountDownLatch(1);
                 ArrayList<Review> reviews = new ArrayList<>();
                 AppExecutors.getInstance().diskIO().execute(() -> {
-                    Business temp  = businessDao.getBusiness(businessId);
+                    Business temp = businessDao.getBusiness(businessId);
                     ArrayList<Review> results = temp.reviews;
                     if (results != null) {
                         reviews.addAll(results);

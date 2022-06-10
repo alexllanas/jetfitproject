@@ -67,12 +67,10 @@ public class BusinessFragment extends Fragment implements BusinessClickListener 
         });
         mainViewModel.isLoading().observe(mainActivity, isLoading -> {
             if (isLoading) {
-//                binding.recyclerViewBusiness.setVisibility(View.GONE);
                 binding.recyclerViewBusiness.setAlpha(0.2f);
             } else {
                 binding.recyclerViewBusiness.setVisibility(View.VISIBLE);
                 binding.recyclerViewBusiness.setAlpha(1f);
-//                binding.recyclerViewBusiness.setVisibility(View.VISIBLE);
             }
         });
     }
