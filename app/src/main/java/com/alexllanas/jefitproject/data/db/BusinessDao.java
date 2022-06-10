@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.alexllanas.jefitproject.features.business.Business;
 import com.alexllanas.jefitproject.features.city.City;
@@ -23,5 +24,6 @@ public interface BusinessDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertBusiness(List<Business> businesses);
 
-
+    @Update
+    int updateBusiness(Business business);
 }

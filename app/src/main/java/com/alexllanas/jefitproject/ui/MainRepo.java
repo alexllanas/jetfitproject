@@ -24,6 +24,7 @@ import com.alexllanas.jefitproject.util.StaticData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import javax.inject.Inject;
 
@@ -60,6 +61,11 @@ public class MainRepo {
         return new MutableLiveData<>(cities);
     }
 
+    public void likeBusiness(Business business) {
+        business.setLiked(!business.isLiked);
+        AppExecutors.getInstance().diskIO().execute(() -> businessDao.updateBusiness(business));
+    }
+
 
     public LiveData<Resource<ArrayList<Business>>> getBusinesses(String cityName) {
         return new NetworkBoundResource<ArrayList<Business>, SearchResponse>(AppExecutors.getInstance(), networkHelper) {
@@ -93,6 +99,7 @@ public class MainRepo {
             @NonNull
             @Override
             protected LiveData<ArrayList<Business>> loadFromDb() {
+                CountDownLatch latch = new CountDownLatch(1);
                 ArrayList<Business> businesses = new ArrayList<>();
                 ArrayList<String> businessIds = new ArrayList<>();
                 AppExecutors.getInstance().diskIO().execute(() -> {
@@ -106,8 +113,14 @@ public class MainRepo {
                     businessIds.forEach(id -> {
                         businesses.add(businessDao.getBusiness(id));
                     });
+                    latch.countDown();
                 });
 
+                try {
+                    latch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 return new MutableLiveData<>(businesses);
             }
 

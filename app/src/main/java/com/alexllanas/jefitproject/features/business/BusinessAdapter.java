@@ -1,6 +1,8 @@
 package com.alexllanas.jefitproject.features.business;
 
 
+import static android.os.Build.VERSION_CODES.O;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +18,18 @@ import androidx.recyclerview.widget.ListUpdateCallback;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexllanas.jefitproject.R;
+import com.alexllanas.jefitproject.features.city.City;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.BusinessViewHolder> {
 
-    private final ArrayList<Business> businesses = new ArrayList<>();
+    private final BusinessClickListener businessClickListener;
+
+    public BusinessAdapter(BusinessClickListener businessClickListener) {
+        this.businessClickListener = businessClickListener;
+    }
 
     @NonNull
     @Override
@@ -46,9 +53,19 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         differ.submitList(items == null ? Collections.emptyList() : items);
     }
 
+    public Business getBusiness(int position) {
+        if (differ.getCurrentList().isEmpty()) {
+            return null;
+        }
+        return differ.getCurrentList().get(position);
+    }
+
     private void bind(BusinessAdapter.BusinessViewHolder holder, Business business) {
         holder.businessNameTextView.setText(business.getName());
         fillIcon(business.isLiked(), holder);
+        holder.likeButton.setOnClickListener(v -> {
+            businessClickListener.onLikeButtonClicked(holder.getAdapterPosition());
+        });
     }
 
     private void fillIcon(boolean fill, BusinessAdapter.BusinessViewHolder holder) {
@@ -59,7 +76,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         }
     }
 
-    public static class BusinessViewHolder extends RecyclerView.ViewHolder {
+    public class BusinessViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView businessNameTextView;
         public ImageView likeButton;
@@ -68,6 +85,12 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
             super(itemView);
             businessNameTextView = (TextView) itemView.findViewById(R.id.business_name);
             likeButton = (ImageView) itemView.findViewById(R.id.button_like);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            businessClickListener.onBusinessClicked(getAdapterPosition());
         }
     }
 
