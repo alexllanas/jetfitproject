@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "12da9943ed190e2c0e9c50f0300f1e2d",
+    "identityHash": "bbdde5a1efdd162df92cb8957c1815ca",
     "entities": [
       {
         "tableName": "cities",
@@ -32,7 +32,7 @@
       },
       {
         "tableName": "businesses",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`businessId` TEXT NOT NULL, `name` TEXT, `rating` TEXT, `categories` TEXT, `location` TEXT, `reviews` TEXT, `isLiked` INTEGER NOT NULL, `imageUrl` TEXT, PRIMARY KEY(`businessId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`businessId` TEXT NOT NULL, `name` TEXT, `rating` TEXT, `categories` TEXT, `location` TEXT, `reviews` TEXT, `isLiked` INTEGER NOT NULL, `imageUrl` TEXT, `coordinates` TEXT, PRIMARY KEY(`businessId`))",
         "fields": [
           {
             "fieldPath": "businessId",
@@ -81,6 +81,12 @@
             "columnName": "imageUrl",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "coordinates",
+            "columnName": "coordinates",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -96,7 +102,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '12da9943ed190e2c0e9c50f0300f1e2d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bbdde5a1efdd162df92cb8957c1815ca')"
     ]
   }
 }

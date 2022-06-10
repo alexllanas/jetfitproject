@@ -88,7 +88,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setTranslucentToolBar(Boolean setTransluscent) {
-        if ()
+    public void setTransparentToolBar(Boolean setTransparent) {
+        if (setTransparent) {
+            toolbar.getBackground().setAlpha(0);
+        } else {
+            toolbar.getBackground().setAlpha(1);
+        }
     }
 }

@@ -1,21 +1,26 @@
 package com.alexllanas.jefitproject.features.detail;
 
+import androidx.room.Entity;
+
+import com.google.gson.annotations.SerializedName;
+
 public class Review {
-    public int id;
+    public String id;
     public User user;
+    @SerializedName("text")
     public String content = "";
 
-    public Review(int id, User user, String content) {
+    public Review(String id, User user, String content) {
         this.id = id;
         this.user = user;
         this.content = content;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

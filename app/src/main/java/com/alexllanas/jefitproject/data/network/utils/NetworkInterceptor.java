@@ -1,4 +1,4 @@
-package com.alexllanas.jefitproject.data.network;
+package com.alexllanas.jefitproject.data.network.utils;
 
 import android.util.Log;
 

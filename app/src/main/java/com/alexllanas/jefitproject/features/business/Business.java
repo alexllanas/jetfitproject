@@ -32,11 +32,12 @@ public class Business implements Parcelable {
     public boolean isLiked;
     @SerializedName("image_url")
     public String imageUrl = "";
+    public Coordinates coordinates;
 
     public Business() {
     }
 
-    public Business(@NonNull String businessId, String name, String rating, ArrayList<Map<String, String>> categories, Location location, ArrayList<Review> reviews, boolean isLiked, String imageUrl) {
+    public Business(@NonNull String businessId, String name, String rating, ArrayList<Map<String, String>> categories, Location location, ArrayList<Review> reviews, boolean isLiked, String imageUrl, Coordinates coordinates) {
         this.businessId = businessId;
         this.name = name;
         this.rating = rating;
@@ -45,7 +46,9 @@ public class Business implements Parcelable {
         this.reviews = reviews;
         this.isLiked = isLiked;
         this.imageUrl = imageUrl;
+        this.coordinates = coordinates;
     }
+
 
     protected Business(Parcel in) {
         businessId = in.readString();
@@ -141,6 +144,7 @@ public class Business implements Parcelable {
         this.reviews = business.reviews;
         this.isLiked = business.isLiked;
         this.imageUrl = business.imageUrl;
+        this.coordinates = business.coordinates;
     }
 
     @Override
@@ -148,12 +152,12 @@ public class Business implements Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Business business = (Business) o;
-        return isLiked == business.isLiked && businessId.equals(business.businessId) && Objects.equals(name, business.name) && Objects.equals(rating, business.rating) && Objects.equals(categories, business.categories) && Objects.equals(location, business.location) && Objects.equals(reviews, business.reviews) && Objects.equals(imageUrl, business.imageUrl);
+        return isLiked == business.isLiked && businessId.equals(business.businessId) && Objects.equals(name, business.name) && Objects.equals(rating, business.rating) && Objects.equals(categories, business.categories) && Objects.equals(location, business.location) && Objects.equals(reviews, business.reviews) && Objects.equals(imageUrl, business.imageUrl) && Objects.equals(coordinates, business.coordinates);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(businessId, name, rating, categories, location, reviews, isLiked, imageUrl);
+        return Objects.hash(businessId, name, rating, categories, location, reviews, isLiked, imageUrl, coordinates);
     }
 
     @Override
@@ -172,5 +176,6 @@ public class Business implements Parcelable {
         dest.writeList(this.reviews);
         dest.writeParcelable(this.location, 0);
         dest.writeList(categories);
+        dest.writeParcelable(this.coordinates, 0);
     }
 }

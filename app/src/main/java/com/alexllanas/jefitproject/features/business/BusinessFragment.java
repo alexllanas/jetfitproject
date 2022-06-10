@@ -73,7 +73,7 @@ public class BusinessFragment extends Fragment implements BusinessClickListener 
     }
 
     private void configureToolbar(String cityName) {
-        mainActivity.setToolbarTitle(getResources().getString(R.string.business_list_title, cityName));
+        mainActivity.setToolbarTitle(cityName);
         mainActivity.setBackNavigationIcon(true);
     }
 

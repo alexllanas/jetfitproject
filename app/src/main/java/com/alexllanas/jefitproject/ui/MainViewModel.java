@@ -6,12 +6,15 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 
-import com.alexllanas.jefitproject.data.network.Resource;
+import com.alexllanas.jefitproject.data.network.utils.Resource;
 import com.alexllanas.jefitproject.features.business.Business;
 import com.alexllanas.jefitproject.features.city.City;
+import com.alexllanas.jefitproject.features.detail.Review;
+import com.alexllanas.jefitproject.util.AppExecutors;
 import com.alexllanas.jefitproject.util.NetworkHelper;
 
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import javax.inject.Inject;
 
@@ -22,12 +25,14 @@ public class MainViewModel extends ViewModel {
 
     private final MediatorLiveData<ArrayList<City>> _cities = new MediatorLiveData<>();
     private final MediatorLiveData<ArrayList<Business>> _businesses = new MediatorLiveData<>();
+    private final MediatorLiveData<ArrayList<Review>> _reviews = new MediatorLiveData<>();
     private final MediatorLiveData<Business> _business = new MediatorLiveData<>();
     private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
 
     private final MainRepo repository;
     private final NetworkHelper networkHelper;
     LiveData<Resource<ArrayList<Business>>> businessSource;
+    LiveData<Resource<ArrayList<Review>>> reviewSource;
 
     @Inject
     public MainViewModel(MainRepo repo, NetworkHelper networkHelper) {
@@ -37,6 +42,10 @@ public class MainViewModel extends ViewModel {
 
     public LiveData<ArrayList<Business>> businessList() {
         return _businesses;
+    }
+
+    public LiveData<ArrayList<Review>> reviewsList() {
+        return _reviews;
     }
 
     public LiveData<Business> business() {
@@ -94,4 +103,34 @@ public class MainViewModel extends ViewModel {
         });
     }
 
+    public void getReviews(String businessId) {
+        if (reviewSource != null) {
+            _reviews.removeSource(reviewSource);
+        }
+        _isLoading.setValue(true);
+        reviewSource = repository.getReviews(businessId);
+        _reviews.addSource(reviewSource, resource -> {
+            if (resource.status == Resource.Status.SUCCESS) {
+                _reviews.setValue(resource.data);
+                _isLoading.setValue(false);
+            } else if (resource.status == Resource.Status.LOADING) {
+                _isLoading.setValue(true);
+            }
+        });
+    }
+
+    public void getBusinessDetails(String businessId) {
+        AppExecutors.getInstance().mainThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                getReviews(businessId);
+            }
+        });
+        AppExecutors.getInstance().mainThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                getBusiness(businessId);
+            }
+        });
+    }
 }

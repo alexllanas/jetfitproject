@@ -1,17 +1,22 @@
 package com.alexllanas.jefitproject.features.detail;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.alexllanas.jefitproject.R;
 import com.alexllanas.jefitproject.databinding.FragmentBusinessDetailBinding;
@@ -23,7 +28,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -34,6 +38,7 @@ public class BusinessDetailFragment extends Fragment {
     private FragmentBusinessDetailBinding binding;
     private MainViewModel mainViewModel;
     private MainActivity mainActivity;
+    private ReviewAdapter reviewAdapter;
 
     @Nullable
     @Override
@@ -41,15 +46,29 @@ public class BusinessDetailFragment extends Fragment {
         binding = FragmentBusinessDetailBinding.inflate(inflater, container, false);
         mainActivity = ((MainActivity) requireActivity());
         mainViewModel = new ViewModelProvider(mainActivity).get(MainViewModel.class);
-        String businessId = BusinessDetailFragmentArgs.fromBundle(getArguments()).getBusinessId();
-        mainViewModel.getBusiness(businessId);
+        initRecyclerView();
+        getData();
         subscribeObservers();
 
         return binding.getRoot();
     }
 
+    private void initRecyclerView() {
+        reviewAdapter = new ReviewAdapter();
+        binding.reviewsSection.recyclerViewCity.setAdapter(reviewAdapter);
+        binding.reviewsSection.recyclerViewCity.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    private void getData() {
+        String businessId = BusinessDetailFragmentArgs.fromBundle(getArguments()).getBusinessId();
+        mainViewModel.getBusinessDetails(businessId);
+//        mainViewModel.getReviews(businessId);
+//        mainViewModel.getBusiness(businessId);
+    }
+
     private void subscribeObservers() {
         mainViewModel.business().observe(mainActivity, this::setupUI);
+        mainViewModel.reviewsList().observe(mainActivity, reviews -> reviewAdapter.submitList(reviews));
     }
 
     private void setupUI(Business business) {
@@ -62,6 +81,19 @@ public class BusinessDetailFragment extends Fragment {
         binding.detailsSection.textRating.setText(getString(R.string.rating, business.rating));
         binding.detailsSection.textCategory.setText(getCategoryText(business.categories));
         binding.detailsSection.textAddress.setText(getAddressText(business.location));
+        binding.detailsSection.textAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createGoogleMapsIntent(business);
+            }
+        });
+    }
+
+    private void createGoogleMapsIntent(Business business) {
+        Uri gmmIntentUri = Uri.parse(String.format("http://maps.google.com/maps?q=loc:%s,%s (%s)", business.coordinates.latitude, business.coordinates.longitude, business.name));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
     }
 
     private String getCategoryText(ArrayList<Map<String, String>> categories) {
@@ -100,7 +132,6 @@ public class BusinessDetailFragment extends Fragment {
     }
 
     private void configureToolbar() {
-        // Use SafeArgs to pass City name when navigating to this fragment and set name in title.
         mainActivity.setToolbarTitle(null);
         mainActivity.setBackNavigationIcon(true);
     }

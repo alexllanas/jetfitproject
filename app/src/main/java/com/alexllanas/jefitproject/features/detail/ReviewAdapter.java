@@ -30,7 +30,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         Review review = reviews.get(position);
         holder.excerptTextView.setText(review.content);
         if (review.user != null) {
-            holder.userNameTextView.setText(review.user.name);
+            holder.userNameTextView.setText(String.format("- %s", review.user.name));
         }
     }
 

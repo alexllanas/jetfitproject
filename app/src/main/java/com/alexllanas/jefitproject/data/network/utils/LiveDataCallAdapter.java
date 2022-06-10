@@ -1,4 +1,4 @@
-package com.alexllanas.jefitproject.data.network;
+package com.alexllanas.jefitproject.data.network.utils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;

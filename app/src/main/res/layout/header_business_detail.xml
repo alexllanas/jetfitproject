@@ -11,30 +11,37 @@
         android:layout_height="224dp"
         tools:background="@color/black" />
 
-    <TextView
-        android:id="@+id/header_business_name"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/image_business_header"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
-        android:textSize="30sp"
-        android:shadowColor="#55000000"
-        android:shadowDx="6"
-        android:shadowDy="6"
-        android:shadowRadius="6"
-        android:textColor="@color/white"
-        tools:text="Business Name" />
+        android:layout_centerInParent="true"
+        android:paddingBottom="16dp">
 
-    <ImageView
-        android:id="@+id/header_button_like"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/image_business_header"
-        android:layout_alignBottom="@id/image_business_header"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_favorite_outlined_white" />
+        <TextView
+            android:id="@+id/header_business_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:shadowColor="#55000000"
+            android:shadowDx="6"
+            android:shadowDy="6"
+            android:shadowRadius="6"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            tools:text="Business Name" />
+
+        <ImageView
+            android:id="@+id/header_button_like"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_favorite_outlined_white" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
 </RelativeLayout>

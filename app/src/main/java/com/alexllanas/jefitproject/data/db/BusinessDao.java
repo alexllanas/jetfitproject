@@ -8,7 +8,6 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.alexllanas.jefitproject.features.business.Business;
-import com.alexllanas.jefitproject.features.city.City;
 
 import java.util.List;
 

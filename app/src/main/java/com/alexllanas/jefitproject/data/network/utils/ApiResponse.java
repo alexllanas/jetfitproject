@@ -1,4 +1,6 @@
-package com.alexllanas.jefitproject.data.network;
+package com.alexllanas.jefitproject.data.network.utils;
+
+import com.alexllanas.jefitproject.data.network.SearchResponse;
 
 import java.io.IOException;
 import java.util.Objects;

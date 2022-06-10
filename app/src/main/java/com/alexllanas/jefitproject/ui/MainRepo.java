@@ -10,13 +10,15 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.alexllanas.jefitproject.data.db.BusinessDao;
 import com.alexllanas.jefitproject.data.db.CityDao;
-import com.alexllanas.jefitproject.data.network.ApiResponse;
-import com.alexllanas.jefitproject.data.network.NetworkBoundResource;
-import com.alexllanas.jefitproject.data.network.Resource;
+import com.alexllanas.jefitproject.data.network.utils.ApiResponse;
+import com.alexllanas.jefitproject.data.network.utils.NetworkBoundResource;
+import com.alexllanas.jefitproject.data.network.utils.Resource;
+import com.alexllanas.jefitproject.data.network.ReviewResponse;
 import com.alexllanas.jefitproject.data.network.SearchResponse;
 import com.alexllanas.jefitproject.data.network.YelpApiService;
 import com.alexllanas.jefitproject.features.business.Business;
 import com.alexllanas.jefitproject.features.city.City;
+import com.alexllanas.jefitproject.features.detail.Review;
 import com.alexllanas.jefitproject.util.AppExecutors;
 import com.alexllanas.jefitproject.util.Constants;
 import com.alexllanas.jefitproject.util.NetworkHelper;
@@ -148,5 +150,49 @@ public class MainRepo {
             e.printStackTrace();
         }
         return new MutableLiveData<>(business);
+    }
+
+    public LiveData<Resource<ArrayList<Review>>> getReviews(String businessId) {
+        return new NetworkBoundResource<ArrayList<Review>, ReviewResponse>(AppExecutors.getInstance(), networkHelper) {
+
+            @Override
+            protected void saveCallResult(@NonNull ReviewResponse item) {
+                Business business = businessDao.getBusiness(businessId);
+                business.setReviews(item.reviews);
+                businessDao.updateBusiness(business);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable ArrayList<Review> data) {
+                return (data == null || data.isEmpty()) && networkHelper.isNetworkConnected();
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ArrayList<Review>> loadFromDb() {
+                CountDownLatch latch = new CountDownLatch(1);
+                ArrayList<Review> reviews = new ArrayList<>();
+                AppExecutors.getInstance().diskIO().execute(() -> {
+                    ArrayList<Review> results = businessDao.getBusiness(businessId).reviews;
+                    if (results != null) {
+                        reviews.addAll(results);
+                    }
+                    latch.countDown();
+                });
+
+                try {
+                    latch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return new MutableLiveData<>(reviews);
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<ReviewResponse>> createCall() {
+                return apiService.getReviews(Constants.API_KEY_TOKEN, businessId);
+            }
+        }.getAsLiveData();
     }
 }

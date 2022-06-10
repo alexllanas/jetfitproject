@@ -25,14 +25,30 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="Category1, Category2" />
 
-    <TextView
-        android:id="@+id/text_address"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        tools:text="201 E Randolph St\nChicago, IL 60602" />
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_map" />
+
+        <TextView
+            android:id="@+id/text_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            tools:text="201 E Randolph St\nChicago, IL 60602" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 </LinearLayout>

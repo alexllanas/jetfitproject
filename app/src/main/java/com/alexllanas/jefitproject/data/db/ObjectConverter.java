@@ -2,6 +2,7 @@ package com.alexllanas.jefitproject.data.db;
 
 import androidx.room.TypeConverter;
 
+import com.alexllanas.jefitproject.features.business.Coordinates;
 import com.alexllanas.jefitproject.features.business.Location;
 import com.alexllanas.jefitproject.features.detail.Review;
 import com.google.gson.Gson;
@@ -49,6 +50,19 @@ public class ObjectConverter {
     @TypeConverter
     public static Location toLocation(String json) {
         Type entityType = new TypeToken<Location>() {
+        }.getType();
+        return new Gson().fromJson(json, entityType);
+    }
+
+    @TypeConverter
+    public static String fromCoordinates(Coordinates coordinates) {
+        Gson gson = new Gson();
+        return gson.toJson(coordinates);
+    }
+
+    @TypeConverter
+    public static Coordinates toCoordinates(String json) {
+        Type entityType = new TypeToken<Coordinates>() {
         }.getType();
         return new Gson().fromJson(json, entityType);
     }
